@@ -33,8 +33,19 @@ export function PublishButton( {
 	visibility,
 	isPublishable,
 	isSaveable,
-	user,
 } ) {
+
+	const user = {
+		data: {
+			"id": 684627,
+			"name": "Marcus Kazmierczak",
+			"capabilities": {
+				"publish_posts": true,
+				"edit_others_posts": true
+			}
+		}
+	};
+
 	const isButtonEnabled = user.data && ! isSaving && isPublishable && isSaveable;
 	const isContributor = user.data && ! user.data.capabilities.publish_posts;
 
@@ -97,13 +108,8 @@ const applyConnect = connect(
 	}
 );
 
-const applyWithAPIData = withAPIData( () => {
-	return {
-		user: '/wp/v2/users/me?context=edit',
-	};
-} );
 
 export default flowRight( [
 	applyConnect,
-	applyWithAPIData,
+	//applyWithAPIData,
 ] )( PublishButton );

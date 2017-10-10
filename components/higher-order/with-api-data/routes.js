@@ -37,6 +37,7 @@ export function getNormalizedRegExp( pattern ) {
  * @return {Boolean}         Whether path is a match
  */
 export function isRouteMatch( pattern, path ) {
+	//if ( pattern.includes( 'types' ) ) { debugger; }
 	return getNormalizedRegExp( pattern ).test( path );
 }
 

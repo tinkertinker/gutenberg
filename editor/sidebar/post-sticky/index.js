@@ -59,7 +59,7 @@ const applyConnect = connect(
 
 const applyWithAPIData = withAPIData( () => {
 	return {
-		user: '/wp/v2/users/me?context=edit',
+		user: `${ wpApiSetting.versionString }users/me?context=edit`,
 	};
 } );
 

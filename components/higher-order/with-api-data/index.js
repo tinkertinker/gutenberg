@@ -150,6 +150,7 @@ export default ( mapPropsToData ) => ( WrappedComponent ) => {
 			const { dataProps } = this.state;
 
 			const mapping = mapPropsToData( props, this.routeHelpers );
+			//debugger;
 			const nextDataProps = reduce( mapping, ( result, path, propName ) => {
 				// Skip if mapping already assigned into state data props
 				// Exmaple: Component updates with one new prop and other

@@ -21,7 +21,7 @@ import { editPost } from '../../actions';
 
 export function PostPendingStatus( { isPublished, instanceId, status, onUpdateStatus, user } ) {
 	if ( isPublished || ! user.data || ! user.data.capabilities.publish_posts ) {
-		return null;
+		//return null;
 	}
 	const pendingId = 'pending-toggle-' + instanceId;
 	const togglePendingStatus = () => {
@@ -62,6 +62,6 @@ const applyWithAPIData = withAPIData( () => {
 
 export default flowRight(
 	applyConnect,
-	applyWithAPIData,
+	//applyWithAPIData,
 	withInstanceId
 )( PostPendingStatus );
