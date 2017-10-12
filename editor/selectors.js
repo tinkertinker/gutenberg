@@ -736,7 +736,7 @@ export function getBlockFocus( state, uid ) {
  * @return {Boolean}      True if multi-selecting, false if not.
  */
 export function isMultiSelecting( state ) {
-	return !! state.blockSelection.isMultiSelecting;
+	return state.blockSelection.isMultiSelecting;
 }
 
 /**
