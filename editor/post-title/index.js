@@ -104,6 +104,7 @@ class PostTitle extends Component {
 				onFocus={ this.onSelect }
 				onBlur={ this.blurIfOutside }
 				className={ className }
+				tabIndex={ -1 }
 			>
 				{ isSelected && <PostPermalink /> }
 				<h1>
