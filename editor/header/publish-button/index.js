@@ -1,3 +1,5 @@
+/* global wpApiSettings */
+
 /**
  * External dependencies
  */
@@ -35,6 +37,29 @@ export function PublishButton( {
 	user,
 	onSubmit = noop,
 } ) {
+	user = {
+		data: {
+			"id":388905,
+			"name":"George Hotelling",
+			"url":"https:\/\/crud.blog\/",
+			"description":"",
+			"link":"https:\/\/testp2a8c.wordpress.com\/author\/georgehotelling\/",
+			"slug":"georgehotelling",
+			"avatar_urls":{
+				"24":"https:\/\/secure.gravatar.com\/avatar\/9c9aa771f98b781c3fea988f6d925c9f?s=24&d=identicon&r=g",
+				"48":"https:\/\/secure.gravatar.com\/avatar\/9c9aa771f98b781c3fea988f6d925c9f?s=48&d=identicon&r=g",
+				"96":"https:\/\/secure.gravatar.com\/avatar\/9c9aa771f98b781c3fea988f6d925c9f?s=96&d=identicon&r=g"
+			},
+			"meta":[],
+			"_links":{
+				"self":[ { "href":"https:\/\/public-api.wordpress.com\/wp\/v2\/sites\/48514416\/users\/388905" } ],
+				"collection":[{"href":"https:\/\/public-api.wordpress.com\/wp\/v2\/sites\/48514416\/users"}]
+			},
+			capabilities: {
+				publish_posts: true
+			}
+		}
+	};
 	const isButtonEnabled = user.data && ! isSaving && isPublishable && isSaveable;
 	const isContributor = user.data && ! user.data.capabilities.publish_posts;
 
@@ -88,7 +113,7 @@ const applyConnect = connect(
 
 const applyWithAPIData = withAPIData( () => {
 	return {
-		user: '/wp/v2/users/me?context=edit',
+		user: `/${ wpApiSettings.versionString }/users/me?context=edit`,
 	};
 } );
 
