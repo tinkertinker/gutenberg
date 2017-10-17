@@ -28,8 +28,6 @@ add_action( 'wp_head', 'wpcom_gutenberg_style' );
  * location and not to relative URLs ie. /wp-json/
  */
 function wpcom_set_rest_url( $url, $a, $b, $c ) {
-    print_r( func_get_args() );
-    die();
 	return 'https://public-api.wordpress.com/wp/v2/sites/';
 }
 add_filter( 'rest_url', 'wpcom_set_rest_url', 10, 4 );
