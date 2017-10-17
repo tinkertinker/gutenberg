@@ -5,7 +5,7 @@
  * @package gutenberg
  * @since 0.10.0
  */
-
+require( ABSPATH . WPINC . '/rest-api/endpoints/class-wp-rest-controller.php' );
 /**
  * Controller which provides a REST endpoint for Gutenberg to read, create and edit reusable blocks. Reusable blocks are
  * stored as posts with a custom post type.
