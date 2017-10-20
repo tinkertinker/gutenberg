@@ -483,27 +483,21 @@ JS;
 	wp_add_inline_script( 'wp-api', $script );
 
 	// Localize the wp-api settings and schema.
-/*
-	$schema_response = rest_do_request( new WP_REST_Request( 'GET', '/wp/v2' ) );
-	if ( ! $schema_response->is_error() ) {
+	$response = wp_remote_request(
+		'https://public-api.wordpress.com/wp/v2/',
+		array(
+			'method' => 'GET'
+		)
+	);
+	if ( ! is_wp_error( $response ) ) {
 		wp_add_inline_script( 'wp-api', sprintf(
 			'wpApiSettings.cacheSchema = true; wpApiSettings.schema = %s;',
-			wp_json_encode( $schema_response->get_data() )
+			$response[ 'body' ]
 		), 'before' );
+	} else {
+		print_r( $schema_response );
+		die();
 	}
-*/
-
-	// fetch using javascript
-	$script = <<<JS
-		fetch( 'https://public-api.wordpress.com/' + wpApiSettings.versionString ).then( resp => {
-			return resp.json();
-		}).then( data => {
-			wpApiSettings.cacheSchema = true; 
-			wpApiSettings.schema = data;
-		});
-	
-JS;
-	wp_add_inline_script( 'wp-api', $script, 'before' );
 }
 
 
