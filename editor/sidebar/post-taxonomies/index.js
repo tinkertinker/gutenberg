@@ -62,7 +62,7 @@ const applyConnect = connect(
 );
 
 const applyWithAPIData = withAPIData( () => ( {
-	taxonomies: '/wp/v2/sites/48514416/taxonomies?context=edit',
+	taxonomies: `${ wpApiSettings.versionString }taxonomies?context=edit`,
 } ) );
 
 export default flowRight( [
