@@ -181,7 +181,7 @@ const applyConnect = connect(
 
 const applyWithAPIData = withAPIData( () => {
 	return {
-		user: `/${ wpApiSettings.versionString }/users/me?context=edit`,
+		user: `/${ wpApiSettings.versionString }users/me?context=edit`,
 	};
 } );
 
