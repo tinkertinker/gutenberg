@@ -609,6 +609,9 @@ function gutenberg_color_palette() {
  * @param string $hook Screen name.
  */
 function gutenberg_editor_scripts_and_styles( $hook ) {
+	// gutenberg uses function get_default_post_to_edit 
+	require_once( ABSPATH . '/wp-admin/includes/post.php' );
+
 	if ( ! empty( $hook ) && ! preg_match( '/(toplevel|gutenberg)_page_gutenberg(-demo)?/', $hook, $page_match ) ) {
 		return;
 	}
@@ -713,7 +716,6 @@ function gutenberg_editor_scripts_and_styles( $hook ) {
 	}
 
 	// Parse post ID from parameters.
-	$post_id = 1396; // TODO: hack
 	if ( isset( $_GET['post_id'] ) && (int) $_GET['post_id'] > 0 ) {
 		$post_id = (int) $_GET['post_id'];
 	}
