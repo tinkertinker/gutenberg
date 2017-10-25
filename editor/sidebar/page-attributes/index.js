@@ -101,7 +101,7 @@ const applyWithAPIData = withAPIData( ( props ) => {
 	const { postTypeSlug } = props;
 
 	return {
-		postType: `/${ wpApiSettings.versionString }/types/${ postTypeSlug }?context=edit`,
+		postType: `/${ wpApiSettings.versionString }types/${ postTypeSlug }?context=edit`,
 	};
 } );
 

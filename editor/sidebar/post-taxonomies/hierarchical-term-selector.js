@@ -135,6 +135,7 @@ class HierarchicalTermSelector extends Component {
 
 	componentDidMount() {
 		const Collection = wp.api.getTaxonomyCollection( this.props.slug );
+
 		this.fetchRequest = new Collection()
 			.fetch( { data: DEFAULT_QUERY } )
 			.done( ( terms ) => {
