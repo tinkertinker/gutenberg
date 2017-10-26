@@ -26,7 +26,6 @@ const PANEL_NAME = 'post-taxonomies';
 
 function PostTaxonomies( { postType, taxonomies, isOpened, onTogglePanel } ) {
 	const availableTaxonomies = filter( taxonomies.data, ( taxonomy ) => taxonomy.types.indexOf( postType ) !== -1 );
-
 	return (
 		<PanelBody
 			title={ __( 'Categories & Tags' ) }
@@ -63,7 +62,7 @@ const applyConnect = connect(
 );
 
 const applyWithAPIData = withAPIData( () => ( {
-	taxonomies: '/wp/v2/taxonomies?context=edit',
+	taxonomies: `${ wpApiSettings.versionString }taxonomies?context=edit`,
 } ) );
 
 export default flowRight( [

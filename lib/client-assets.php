@@ -455,48 +455,50 @@ function gutenberg_extend_wp_api_backbone_client() {
 	$script  = sprintf( 'wp.api.postTypeRestBaseMapping = %s;', wp_json_encode( $post_type_rest_base_mapping ) );
 	$script .= sprintf( 'wp.api.taxonomyRestBaseMapping = %s;', wp_json_encode( $taxonomy_rest_base_mapping ) );
 	$script .= <<<JS
+
 		wp.api.getPostTypeModel = function( postType ) {
-			var route = '/' + wpApiSettings.versionString + this.postTypeRestBaseMapping[ postType ] + '/(?P<id>[\\\\d]+)';
-			return _.find( wp.api.models, function( model ) {
-				return model.prototype.route && route === model.prototype.route.index;
-			} );
+			console.log( "Post Type Model", postType );
+			postType = postType.substr(0,1).toUpperCase() + postType.substr(1);
+			if ( postType in wp.api.models ) {
+				return wp.api.models[ postType ];
+			}
 		};
+
 		wp.api.getPostTypeRevisionsCollection = function( postType ) {
-			var route = '/' + wpApiSettings.versionString + this.postTypeRestBaseMapping[ postType ] + '/(?P<parent>[\\\\d]+)/revisions';
-			return _.find( wp.api.collections, function( model ) {
-				return model.prototype.route && route === model.prototype.route.index;
-			} );
+			console.log ( "Post Type Revision", postType );
+			let mapping = this.postTypeRestBaseMapping[ postType ];
+			mapping = mapping.substr(0,1).toUpperCase() + mapping.substr(1);
+			if ( mapping in wp.api.collections ) {
+				return wp.api.collections[ mapping ];
+			}
 		};
+
 		wp.api.getTaxonomyModel = function( taxonomy ) {
-			var route = '/' + wpApiSettings.versionString + this.taxonomyRestBaseMapping[ taxonomy ] + '/(?P<id>[\\\\d]+)';
-			return _.find( wp.api.models, function( model ) {
-				return model.prototype.route && route === model.prototype.route.index;
-			} );
+			let mapping = this.taxonomyRestBaseMapping[ taxonomy ];
+			mapping = mapping.substr(0,1).toUpperCase() + mapping.substr(1);
+			if ( mapping in wp.api.collections ) {
+				return wp.api.models[ mapping ];
+			}
 		};
+
 		wp.api.getTaxonomyCollection = function( taxonomy ) {
-			var route = '/' + wpApiSettings.versionString + this.taxonomyRestBaseMapping[ taxonomy ];
-			return _.find( wp.api.collections, function( model ) {
-				return model.prototype.route && route === model.prototype.route.index;
-			} );
+			let mapping = this.taxonomyRestBaseMapping[ taxonomy ];
+			mapping = mapping.substr(0,1).toUpperCase() + mapping.substr(1);
+			if ( mapping in wp.api.collections ) {
+				return wp.api.collections[ mapping ];
+			}
 		};
 JS;
 	wp_add_inline_script( 'wp-api', $script );
 
 	// Localize the wp-api settings and schema.
-	$response = wp_remote_request(
-		'https://public-api.wordpress.com/wp/v2/',
-		array(
-			'method' => 'GET'
-		)
-	);
-	if ( ! is_wp_error( $response ) ) {
+	$schema_endpoint = untrailingslashit( get_rest_url() ) . '/wp/v2';
+	$schema_response = wp_remote_request( $schema_endpoint );
+	if ( ! is_wp_error( $schema_response ) ) {
 		wp_add_inline_script( 'wp-api', sprintf(
 			'wpApiSettings.cacheSchema = true; wpApiSettings.schema = %s;',
-			$response[ 'body' ]
+			$schema_response['body']
 		), 'before' );
-	} else {
-		print_r( $schema_response );
-		die();
 	}
 }
 
@@ -607,6 +609,9 @@ function gutenberg_color_palette() {
  * @param string $hook Screen name.
  */
 function gutenberg_editor_scripts_and_styles( $hook ) {
+	// gutenberg uses function get_default_post_to_edit 
+	require_once( ABSPATH . '/wp-admin/includes/post.php' );
+
 	if ( ! empty( $hook ) && ! preg_match( '/(toplevel|gutenberg)_page_gutenberg(-demo)?/', $hook, $page_match ) ) {
 		return;
 	}
@@ -711,7 +716,6 @@ function gutenberg_editor_scripts_and_styles( $hook ) {
 	}
 
 	// Parse post ID from parameters.
-	$post_id = 1396; // TODO: hack
 	if ( isset( $_GET['post_id'] ) && (int) $_GET['post_id'] > 0 ) {
 		$post_id = (int) $_GET['post_id'];
 	}
